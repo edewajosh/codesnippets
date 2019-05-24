@@ -34,11 +34,14 @@ def monthly_payment(request):
 
 @login_required
 def monthly_payment_made(request):
+    
     payments = MonthlyPayment.objects.filter(farmer__username=request.user).filter(payment_date__month = datetime.now().month )
     context = {
         'payments' : payments,
         'datetime' : datetime.now(),
     }
+ 
+    #print("I will be running after every 1 minute")
     return render(request, 'finalyear/summary.html', context)
 
 def annual_payment(request):
@@ -58,3 +61,15 @@ def annual_payment_made(request):
         'datetime' : datetime.now(),
     }
     return render(request, 'finalyear/summary.html', context)
+
+
+"""
+The code below is moved to a different file
+"""
+
+def testing_celery():
+    print("This will be running once in the beginning of the month")
+
+def schedule_monthly_payment():
+    payments = Transaction.objects.values(
+        'farmer__username').annotate(Sum('kilos'))

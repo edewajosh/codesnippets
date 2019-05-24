@@ -1,0 +1,22 @@
+from __future__ import absolute_import, unicode_literals
+from celery import task
+from celery.task.schedules import crontab
+from celery.decorators import periodic_task
+
+from finalyear.views import monthly_payment_made, testing_celery
+from finalyear.models import Transaction
+
+"""
+@task()
+def add_two_numbers():
+    print("Hello Celery!")
+"""
+
+@periodic_task(
+    run_every = (crontab(0, 0, day_of_month='24')),
+    name =  "monthly_payment_made",
+    ignore_result = True
+)
+def calculate_monthly_devidends():
+    #monthly_payment_made()
+    testing_celery()
