@@ -10,16 +10,6 @@ class Center(models.Model):
     def __str__(self):
         return self.name
 
-"""
-class Farmer(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    id_number = models.IntegerField()
-    phonenumber = models.IntegerField()
-
-    def __str__(self):
-        return self.firstname + " " + self.lastname
-"""
-
 class Transaction(models.Model):
     center = models.ForeignKey(Center, on_delete=models.CASCADE)
     farmer = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -30,6 +20,8 @@ class Transaction(models.Model):
         return str(self.kilos)
 
 class MonthlyPayment(models.Model):
+    # At extreme point we could assign a farmer field a value directly
+    # of course it will be unique
     farmer = models.ForeignKey(User, on_delete=models.CASCADE)
     amount = models.FloatField()
     kilos = models.FloatField()

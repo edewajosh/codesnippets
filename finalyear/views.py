@@ -80,4 +80,10 @@ def schedule_annual_payment():
         .values('farmer__username')
         .annotate(Sum('kilos'))
 
+    # the farmer raises raises an error that it the value must be an User instance
+    # since it is a foreing key that inherits from User model
+    # to be FIXED
+    for payment in payments:
+        AnnualPayment.objects.create(farmer = payment['farmer__username'], 
+            amount=payment['kilos_sum']*50,kilos=payment['kilos_sum'])
     
