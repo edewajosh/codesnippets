@@ -71,5 +71,13 @@ def testing_celery():
     print("This will be running once in the beginning of the month")
 
 def schedule_monthly_payment():
-    payments = Transaction.objects.values(
+    payments = Transaction.objects.filter(date_posted__month = datetime.now().month - 1).values(
         'farmer__username').annotate(Sum('kilos'))
+
+def schedule_annual_payment():
+    payments = Transaction.objects.filter(
+        date_posted__year = datetime.now().year)
+        .values('farmer__username')
+        .annotate(Sum('kilos'))
+
+    
