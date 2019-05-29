@@ -1,7 +1,8 @@
+# cashmunene@1234
 from django.contrib import admin
 from django.contrib.admin import AdminSite
 
-from finalyear.models import Center, Transaction, AnnualPayment, MonthlyPayment
+from finalyear.models import Center, Transaction, AnnualPayment, MonthlyPayment, Fertilizer
 
 class FinalyearAdminSite(AdminSite):
     pass
@@ -31,3 +32,4 @@ admin.site.register(Center, CenterAdmin)
 #admin.site.register(Farmer, FarmerAdmin)
 admin.site.register(AnnualPayment, AnnualAdmin)
 admin.site.register(MonthlyPayment,MonthlyAdmin)
+admin.site.register(Fertilizer)

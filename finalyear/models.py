@@ -22,6 +22,7 @@ class Transaction(models.Model):
 class MonthlyPayment(models.Model):
     # At extreme point we could assign a farmer field a value directly
     # of course it will be unique
+    #username = models.CharField(max_length=50, unique=True)
     farmer = models.ForeignKey(User, on_delete=models.CASCADE)
     amount = models.FloatField()
     kilos = models.FloatField()
@@ -41,3 +42,16 @@ class AnnualPayment(models.Model):
     def __str__(self):
         return str(self.amount)
 
+class Fertilizer(models.Model):
+    farmer = models.ForeignKey(User, on_delete=models.CASCADE)
+    number_of_bags = models.PositiveIntegerField()
+    weight = models.DecimalField(max_digits=10, decimal_places=2)
+    total_weight = models.DecimalField(max_digits=10, decimal_places=2)
+    date_issued = models.DateField(default=datetime.now)
+
+    def save(self, *args, **kwargs):
+        self.total_weight = self.number_of_bags * self.weight
+        super(Fertilizer,self).save(*args, **kwargs)
+
+    def __str__(self):
+        return str(self.farmer)

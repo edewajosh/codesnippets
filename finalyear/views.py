@@ -34,13 +34,13 @@ def monthly_payment(request):
 
 @login_required
 def monthly_payment_made(request):
-    
+
     payments = MonthlyPayment.objects.filter(farmer__username=request.user).filter(payment_date__month = datetime.now().month )
     context = {
         'payments' : payments,
         'datetime' : datetime.now(),
     }
- 
+
     #print("I will be running after every 1 minute")
     return render(request, 'finalyear/summary.html', context)
 
@@ -76,14 +76,11 @@ def schedule_monthly_payment():
 
 def schedule_annual_payment():
     payments = Transaction.objects.filter(
-        date_posted__year = datetime.now().year)
-        .values('farmer__username')
-        .annotate(Sum('kilos'))
+        date_posted__year = datetime.now().year).values('farmer__username').annotate(Sum('kilos'))
 
     # the farmer raises raises an error that it the value must be an User instance
     # since it is a foreing key that inherits from User model
     # to be FIXED
     for payment in payments:
-        AnnualPayment.objects.create(farmer = payment['farmer__username'], 
+        AnnualPayment.objects.create(username = payment['farmer__username'],
             amount=payment['kilos_sum']*50,kilos=payment['kilos_sum'])
-    
