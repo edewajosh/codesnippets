@@ -23,7 +23,8 @@ class MonthlyPayment(models.Model):
     # At extreme point we could assign a farmer field a value directly
     # of course it will be unique
     #username = models.CharField(max_length=50, unique=True)
-    farmer = models.ForeignKey(User, on_delete=models.CASCADE)
+    #farmer = models.ForeignKey(User, on_delete=models.CASCADE)
+    username = models.CharField(max_length=50, unique=True)
     amount = models.FloatField()
     kilos = models.FloatField()
     payment_date = models.DateField(default=datetime.now)
@@ -33,7 +34,8 @@ class MonthlyPayment(models.Model):
         return str(self.amount)
 
 class AnnualPayment(models.Model):
-    farmer = models.ForeignKey(User, on_delete=models.CASCADE)
+    #farmer = models.ForeignKey(User, on_delete=models.CASCADE)
+    username = models.CharField(max_length=50, unique=True)
     amount = models.FloatField()
     kilos = models.FloatField()
     payment_date = models.DateField(default=datetime.now)

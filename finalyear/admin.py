@@ -12,10 +12,10 @@ class CenterAdmin(admin.ModelAdmin):
 
 
 class MonthlyAdmin(admin.ModelAdmin):
-    list_display = ('farmer', 'kilos','amount', 'payment_date')
+    list_display = ('username', 'kilos','amount', 'payment_date')
 
 class AnnualAdmin(admin.ModelAdmin):
-    list_display = ('farmer', 'kilos','amount', 'payment_date')
+    list_display = ('username', 'kilos','amount', 'payment_date')
 
 
 class TransactionAdmin(admin.ModelAdmin):

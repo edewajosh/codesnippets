@@ -24,7 +24,7 @@ def transactions(request):
     return render(request, 'finalyear/transactions.html', context)
 
 def monthly_payment(request):
-    total_kilos = list(Transaction.objects.filter(farmer__username=request.user).filter(date_posted__month = datetime.now().month).aggregate(Sum('kilos')).values())[0]
+    total_kilos = list(Transaction.objects.filter(username=request.user).filter(date_posted__month = datetime.now().month).aggregate(Sum('kilos')).values())[0]
     amount = total_kilos * 15
     transactions = MonthlyPayment.objects.get_or_create(farmer=request.user,
                                                     payment_date__month = datetime.now().month,
@@ -35,7 +35,7 @@ def monthly_payment(request):
 @login_required
 def monthly_payment_made(request):
 
-    payments = MonthlyPayment.objects.filter(farmer__username=request.user).filter(payment_date__month = datetime.now().month )
+    payments = MonthlyPayment.objects.filter(username=request.user).filter(payment_date__month = datetime.now().month )
     context = {
         'payments' : payments,
         'datetime' : datetime.now(),
@@ -45,7 +45,7 @@ def monthly_payment_made(request):
     return render(request, 'finalyear/summary.html', context)
 
 def annual_payment(request):
-    total_kilos = list(Transaction.objects.filter(farmer__username=request.user).filter(date_posted__year = datetime.now().year).aggregate(Sum('kilos')).values())[0]
+    total_kilos = list(Transaction.objects.filter(username=request.user).filter(date_posted__year = datetime.now().year).aggregate(Sum('kilos')).values())[0]
     amount = total_kilos * 45
     transactions = AnnualPayment.objects.get_or_create(farmer=request.user,
                                                     payment_date__year = datetime.now().year,
@@ -55,7 +55,7 @@ def annual_payment(request):
 
 @login_required
 def annual_payment_made(request):
-    payments = AnnualPayment.objects.filter(farmer__username=request.user).filter(payment_date__year = datetime.now().year )
+    payments = AnnualPayment.objects.filter(username=request.user).filter(payment_date__year = datetime.now().year )
     context = {
         'payments' : payments,
         'datetime' : datetime.now(),
