@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.db.models import Sum
 
-from .models import Transaction, MonthlyPayment, AnnualPayment
+from .models import Transaction, MonthlyPayment, AnnualPayment, Fertilizer
 
 from datetime import datetime
 
@@ -23,6 +23,7 @@ def transactions(request):
     }
     return render(request, 'finalyear/transactions.html', context)
 
+"""
 def monthly_payment(request):
     total_kilos = list(Transaction.objects.filter(username=request.user).filter(date_posted__month = datetime.now().month).aggregate(Sum('kilos')).values())[0]
     amount = total_kilos * 15
@@ -31,7 +32,7 @@ def monthly_payment(request):
                                                     amount = amount,
                                                     kilos =  total_kilos,)
     return redirect('home')
-
+"""
 @login_required
 def monthly_payment_made(request):
 
@@ -41,9 +42,8 @@ def monthly_payment_made(request):
         'datetime' : datetime.now(),
     }
 
-    #print("I will be running after every 1 minute")
     return render(request, 'finalyear/summary.html', context)
-
+"""
 def annual_payment(request):
     total_kilos = list(Transaction.objects.filter(username=request.user).filter(date_posted__year = datetime.now().year).aggregate(Sum('kilos')).values())[0]
     amount = total_kilos * 45
@@ -52,7 +52,7 @@ def annual_payment(request):
                                                     amount = amount,
                                                     kilos =  total_kilos,)
     return redirect('home')
-
+"""
 @login_required
 def annual_payment_made(request):
     payments = AnnualPayment.objects.filter(username=request.user).filter(payment_date__year = datetime.now().year )
@@ -64,7 +64,7 @@ def annual_payment_made(request):
 
 
 """
-The code below is moved to a different file
+The code below is recommended to be run in a seperate file
 """
 
 def testing_celery():
@@ -74,13 +74,17 @@ def schedule_monthly_payment():
     payments = Transaction.objects.filter(date_posted__month = datetime.now().month - 1).values(
         'farmer__username').annotate(Sum('kilos'))
 
+    for payment in payments:
+        #fertilizer = Fertilizer.objects.filter(farmer__username = payment['farmer__username']).
+        MonthlyPayment.objects.create(username = payment['farmer__username'],
+            amount=payment['kilos__sum']*50,kilos=payment['kilos__sum'])
+
+
+
 def schedule_annual_payment():
     payments = Transaction.objects.filter(
         date_posted__year = datetime.now().year).values('farmer__username').annotate(Sum('kilos'))
 
-    # the farmer raises raises an error that it the value must be an User instance
-    # since it is a foreing key that inherits from User model
-    # to be FIXED
     for payment in payments:
         AnnualPayment.objects.create(username = payment['farmer__username'],
-            amount=payment['kilos_sum']*50,kilos=payment['kilos_sum'])
+            amount=payment['kilos__sum']*50,kilos=payment['kilos__sum'])
