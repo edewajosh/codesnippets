@@ -38,10 +38,16 @@ class MonthlyPayment(models.Model):
 class AnnualPayment(models.Model):
     #farmer = models.ForeignKey(User, on_delete=models.CASCADE)
     username = models.CharField(max_length=50, unique=True)
-    amount = models.FloatField()
-    kilos = models.FloatField()
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    kilos = models.DecimalField(max_digits=10, decimal_places=2)
     payment_date = models.DateField(default=datetime.now)
+    deductions = models.DecimalField(max_digits=10, decimal_places=2)
     paid = models.BooleanField(default=True)
+    net_pay = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def save(self, *args, **kwargs):
+        self.net_pay = self.amount - self.deductions
+        super(AnnualPayment, self).save(*args, **kwargs)
 
     def __str__(self):
         return str(self.amount)

@@ -11,6 +11,8 @@
 			      <th scope="col">Date</th>
 			      <th scope="col">Size(kgs)</th>
 			      <th scope="col">Amount(kshs)</th>
+			      <th scope="col">Deductions(kshs)</th>
+			      <th scope="col">Net Pay(kshs)</th>
 			    </tr>
 		  	</thead>
 		  	<tbody>
@@ -21,6 +23,8 @@
 				      <td>{{ payment.payment_date }}</td>
 				      <td>{{ payment.kilos }} </td>
 				      <td>{{ payment.amount }}</td>
+				      <td>{{ payment.deductions }}</td>
+				      <td><b>{{ payment.net_pay }}</b></td>
 				    </tr>
 			    {% endfor %}
 		  	</tbody>

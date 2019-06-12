@@ -15,7 +15,7 @@ class MonthlyAdmin(admin.ModelAdmin):
     list_display = ('username', 'kilos','amount', 'payment_date', 'paid')
 
 class AnnualAdmin(admin.ModelAdmin):
-    list_display = ('username', 'kilos','amount', 'payment_date', 'paid')
+    list_display = ('username', 'kilos','amount', 'deductions', 'payment_date', 'net_pay','paid')
 
 
 class TransactionAdmin(admin.ModelAdmin):

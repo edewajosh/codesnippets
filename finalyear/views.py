@@ -9,7 +9,7 @@ from .models import Transaction, MonthlyPayment, AnnualPayment, Fertilizer
 from datetime import datetime
 
 def home(request):
-    return render(request, 'finalyear/index.html')
+    return render(request, 'generic/indexed.html')
 
 def about(request):
     return render(request, 'finalyear/about.html')
@@ -86,5 +86,6 @@ def schedule_annual_payment():
         date_posted__year = datetime.now().year).values('farmer__username').annotate(Sum('kilos'))
 
     for payment in payments:
+        total_kilos = list(Fertilizer.objects.filter(farmer__username=payment['farmer__username']).filter(date_issued__year = datetime.now().year).aggregate(Sum('total_cost')).values())[0]
         AnnualPayment.objects.create(username = payment['farmer__username'],
-            amount=payment['kilos__sum']*50,kilos=payment['kilos__sum'])
+            amount=payment['kilos__sum']*50,kilos=payment['kilos__sum'], deductions=total_kilos)
