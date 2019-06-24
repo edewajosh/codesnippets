@@ -11,28 +11,25 @@ from datetime import datetime
 def home(request):
     return render(request, 'generic/indexed.html')
 
+"""
 def about(request):
     return render(request, 'finalyear/about.html')
+"""
 
 @login_required
 def transactions(request):
-
+    print(request.GET.get('search'))
+    monthly = Transaction.objects.filter(farmer__username=request.user).filter(date_posted__month = request.GET.get('search'))
+    print(monthly)
     transactions = Transaction.objects.filter(farmer__username = request.user)
+    #fertilizer = Fertilizer.objects.filter(farmer__username = request.user).aggregate(Sum('total_weight'))
     context = {
         'transactions' : transactions,
+        'monthly' : monthly
+        #'fertilizer' : fertilizer,
     }
     return render(request, 'finalyear/transactions.html', context)
 
-"""
-def monthly_payment(request):
-    total_kilos = list(Transaction.objects.filter(username=request.user).filter(date_posted__month = datetime.now().month).aggregate(Sum('kilos')).values())[0]
-    amount = total_kilos * 15
-    transactions = MonthlyPayment.objects.get_or_create(farmer=request.user,
-                                                    payment_date__month = datetime.now().month,
-                                                    amount = amount,
-                                                    kilos =  total_kilos,)
-    return redirect('home')
-"""
 @login_required
 def monthly_payment_made(request):
 
@@ -43,16 +40,7 @@ def monthly_payment_made(request):
     }
 
     return render(request, 'finalyear/summary.html', context)
-"""
-def annual_payment(request):
-    total_kilos = list(Transaction.objects.filter(username=request.user).filter(date_posted__year = datetime.now().year).aggregate(Sum('kilos')).values())[0]
-    amount = total_kilos * 45
-    transactions = AnnualPayment.objects.get_or_create(farmer=request.user,
-                                                    payment_date__year = datetime.now().year,
-                                                    amount = amount,
-                                                    kilos =  total_kilos,)
-    return redirect('home')
-"""
+
 @login_required
 def annual_payment_made(request):
     payments = AnnualPayment.objects.filter(username=request.user).filter(payment_date__year = datetime.now().year )

@@ -1,29 +1,80 @@
 {% extends 'generic/base.html' %}
 
 {% block content %}
-    <div class="content-section">
-    	<p class="p3">Payment Information</p>
-	    <table class="table">
-		  	<thead class="thead-dark">
-			    <tr>
-			      <th scope="col">#</th>
-			      <th scope="col">Farmer</th>
-			      <th scope="col">Date</th>
-			      <th scope="col">Size(kgs)</th>
-			      <th scope="col">Payment Date</th>
-			    </tr>
-		  	</thead>
-		  	<tbody>
-		  		{% for transaction in transactions %}
-				    <tr>
-				      <th scope="row">{{ transaction.id }}</th>
-				      <td>{{ transaction.farmer }}</td>
-				      <td>{{ transaction.center }}</td>
-				      <td>{{ transaction.kilos }} </td>
-				      <td>{{ transaction.date_posted }}</td>
-				    </tr>
-			    {% endfor %}
-		  	</tbody>
-		</table>
+    <div class="content-section row">
+
+      <form class="form-inline my-2 my-lg-1" action="/transactions/">
+        <input class="form-control mr-sm-2" name="search" type="text" placeholder="Search month in numbers..." aria-label="Search">
+        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+      </form>
+      <div class="col-md-8">
+        {% if monthly %}
+        <table class="table">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Farmer</th>
+              <th scope="col">Date</th>
+              <th scope="col">Size(kgs)</th>
+              <th scope="col">Payment Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for month in monthly %}
+              <tr>
+                <th scope="row">{{ month.id }}</th>
+                <td>{{ month.farmer }}</td>
+                <td>{{ month.center }}</td>
+                <td>{{ month.kilos }} </td>
+                <td>{{ month.date_posted }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+  	    <table class="table">
+  		  	<thead class="thead-dark">
+  			    <tr>
+  			      <th scope="col">#</th>
+  			      <th scope="col">Farmer</th>
+  			      <th scope="col">Date</th>
+  			      <th scope="col">Size(kgs)</th>
+  			      <th scope="col">Payment Date</th>
+  			    </tr>
+  		  	</thead>
+  		  	<tbody>
+  		  		{% for transaction in transactions %}
+  				    <tr>
+  				      <th scope="row">{{ transaction.id }}</th>
+  				      <td>{{ transaction.farmer }}</td>
+  				      <td>{{ transaction.center }}</td>
+  				      <td>{{ transaction.kilos }} </td>
+  				      <td>{{ transaction.date_posted }}</td>
+  				    </tr>
+  			    {% endfor %}
+  		  	</tbody>
+  		  </table>
+      </div>
+      {% endif %}
+      <div class="col-md-4">
+        <div class="content-section">
+          <p class='text-muted'>Select the month to see your monthly dues.
+          <ul class="list-group">
+            <li class="list-group-item list-group-item-light"><a href="#">January</a></li>
+            <li class="list-group-item list-group-item-light"><a href="#">February</a></li>
+            <li class="list-group-item list-group-item-light"><a href="#">March</a></li>
+            <li class="list-group-item list-group-item-light"><a href="#">April</a></li>
+            <li class="list-group-item list-group-item-light"><a href="#">May</a></li>
+            <li class="list-group-item list-group-item-light"><a href="#">June</a></li>
+            <li class="list-group-item list-group-item-light"><a href="#">July</a></li>
+            <li class="list-group-item list-group-item-light"><a href="#">August</a></li>
+            <li class="list-group-item list-group-item-light"><a href="#">September</a></li>
+            <li class="list-group-item list-group-item-light"><a href="#">October</a></li>
+            <li class="list-group-item list-group-item-light"><a href="#">November</a></li>
+            <li class="list-group-item list-group-item-light"><a href="#">December</a></li>
+          </ul>
+        </p>
+        </div>
+      </div>
     </div>
 {% endblock content %}
