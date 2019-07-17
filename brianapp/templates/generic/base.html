@@ -29,7 +29,7 @@
             {% if user.is_authenticated %}
               <li><a href="{% url 'monthly_payment_made' %}">Monthly</a></li>
               <li><a href="{% url 'annual_payment_made' %}">Annual</a></li>
-              <li><a href="{% url 'transactions' %}">Transactions</a></li>
+              <li><a href="{% url 'transactions' %}">Daily</a></li>
               <li><a href="{% url 'profile' %}">Profile</a></li>
               <li><a href="{% url 'logout' %}">Logout</a></li>
             {% else %}

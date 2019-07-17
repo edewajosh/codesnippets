@@ -22,7 +22,7 @@ def transactions(request):
     monthly = Transaction.objects.filter(farmer__username=request.user).filter(date_posted__month = request.GET.get('search'))
     print(monthly)
     transactions = Transaction.objects.filter(farmer__username = request.user)
-    #fertilizer = Fertilizer.objects.filter(farmer__username = request.user).aggregate(Sum('total_weight'))
+
     context = {
         'transactions' : transactions,
         'monthly' : monthly
@@ -32,9 +32,16 @@ def transactions(request):
 
 @login_required
 def monthly_payment_made(request):
+    transactions_estimates = Transaction.objects.filter(date_posted__month = datetime.now().month).filter(
+        farmer__username = request.user).aggregate(total_kilos = Sum('kilos'))
+    if transactions_estimates is None:
+        estimated_pay = 0
+    else:
+        estimated_pay = transactions_estimates['total_kilos'] * 14.00
 
     payments = MonthlyPayment.objects.filter(username=request.user).filter(payment_date__month = datetime.now().month )
     context = {
+        'estimated_pay' : estimated_pay,
         'payments' : payments,
         'datetime' : datetime.now(),
     }
@@ -43,6 +50,14 @@ def monthly_payment_made(request):
 
 @login_required
 def annual_payment_made(request):
+    #fertilizer_cost = Fertilizer.objects.filter(farmer__username=request.user).filter(date_issued__year=datetime.now().year)
+    transactions_estimates = Transaction.objects.filter(date_posted__month = datetime.now().month).filter(
+        farmer__username = request.user).aggregate(total_kilos = Sum('kilos'))
+    if transactions_estimates is None:
+        estimated_pay = 0
+    else:
+        estimated_pay = transactions_estimates['total_kilos'] * 14.00
+
     payments = AnnualPayment.objects.filter(username=request.user).filter(payment_date__year = datetime.now().year )
     context = {
         'payments' : payments,
