@@ -51,13 +51,13 @@ def monthly_payment_made(request):
 @login_required
 def annual_payment_made(request):
 
-    fertilizer_cost = Fertilizer.objects.filter(farmer__username=request.user).filter(date_issued__year=datetime.now().year)
+    fertilizer_cost = Fertilizer.objects.filter(farmer__username=request.user).filter(date_issued__year=datetime.now().year).aggregate(total=Sum('total_cost'))
     transactions_estimates = Transaction.objects.filter(date_posted__month = datetime.now().month).filter(
         farmer__username = request.user).aggregate(total_kilos = Sum('kilos'))
     if transactions_estimates['total_kilos'] is None:
         estimated_pay = 0
     else:
-        estimated_pay = transactions_estimates['total_kilos'] * 52.00
+        estimated_pay = transactions_estimates['total_kilos'] * 52.00 - float(fertilizer_cost['total'])
 
     payments = AnnualPayment.objects.filter(username=request.user).filter(payment_date__year = datetime.now().year )
     context = {
