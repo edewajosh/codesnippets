@@ -2,11 +2,12 @@
 
 {% block content %}
     <div class="content-section row">
-
+      <!--
       <form class="form-inline my-2 my-lg-1" action="/transactions/">
         <input class="form-control mr-sm-2" name="search" type="text" placeholder="Search month in numbers..." aria-label="Search">
         <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
       </form>
+      -->
       <div class="col-md-8">
         {% if monthly %}
         <table class="table">
@@ -56,6 +57,7 @@
   		  </table>
       </div>
       {% endif %}
+      <!--
       <div class="col-md-4">
         <div class="content-section">
           <p class='text-muted'>Select the month to see your monthly dues.
@@ -76,5 +78,6 @@
         </p>
         </div>
       </div>
+      -->
     </div>
 {% endblock content %}

@@ -56,13 +56,13 @@ class Fertilizer(models.Model):
     farmer = models.ForeignKey(User, on_delete=models.CASCADE)
     number_of_bags = models.PositiveIntegerField()
     weight = models.DecimalField(max_digits=10, decimal_places=2)
-    total_weight = models.DecimalField(max_digits=10, decimal_places=2)
-    total_cost = models.DecimalField(max_digits=10, decimal_places=2)
+    total_weight = models.DecimalField(max_digits=10, decimal_places=2, blank=True)
+    total_cost = models.DecimalField(max_digits=10, decimal_places=2, blank=True)
     date_issued = models.DateField(default=datetime.now)
 
     def save(self, *args, **kwargs):
         self.total_weight = self.number_of_bags * self.weight
-        self.total_cost = self.number_of_bags * self.weight * 1500
+        self.total_cost = self.number_of_bags  * 1500
         super(Fertilizer,self).save(*args, **kwargs)
 
     def __str__(self):

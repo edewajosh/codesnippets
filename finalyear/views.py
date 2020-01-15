@@ -56,6 +56,8 @@ def annual_payment_made(request):
         farmer__username = request.user).aggregate(total_kilos = Sum('kilos'))
     if transactions_estimates['total_kilos'] is None:
         estimated_pay = 0
+    elif fertilizer_cost['total'] is None:
+        estimated_pay = transactions_estimates['total_kilos'] * 52.00 
     else:
         estimated_pay = transactions_estimates['total_kilos'] * 52.00 - float(fertilizer_cost['total'])
 
