@@ -18,11 +18,11 @@ python-dateutil = "==2.8.0"
 pytz = "==2018.5"
 six = "==1.12.0"
 vine = "==1.3.0"
-Django = "*"
 django_celery_beat = "==1.4.0"
-Pillow = "*"
 django-filters = "*"
 djangorestframework = "*"
+django = "*"
+pillow = "*"
 
 [requires]
 python_version = "3.6"
